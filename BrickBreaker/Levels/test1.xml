@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bricks>
+  <brick x="204" y="54" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="554" y="74" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="435" y="353" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="764" y="107" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="830" y="339" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="867" y="220" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="54" y="339" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="325" y="187" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="63" y="147" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="152" y="237" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="392" y="23" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="752" y="272" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="623" y="187" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="290" y="84" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="351" y="290" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="464" y="147" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="554" y="335" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="659" y="38" width="64" height="39" value="1" colour="GreenYellow" />
+  <brick x="54" y="38" width="64" height="39" value="1" colour="GreenYellow" />
+</bricks>
