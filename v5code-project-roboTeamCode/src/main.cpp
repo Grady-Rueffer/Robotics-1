@@ -16,6 +16,7 @@
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
+#include "cmath"
 // :^)
 using namespace vex;
 
@@ -38,23 +39,26 @@ void turn(bool rDir, int rotationDegrees) {
 
     while (Inertial7.rotation(degrees) < rotationTotal) {
     }
+    double speed = rotationTotal - Inertial7.rotation(degrees);
 
     RightMotor.spin(reverse);
     LeftMotor.spin(forward);
 
-    RightMotor.setVelocity(50, percent);
-    LeftMotor.setVelocity(50, percent);
+    RightMotor.setVelocity(speed, percent);
+    LeftMotor.setVelocity(speed, percent);
   }
 
   else {
     double rotationTotal = Inertial7.rotation(degrees) - rotationDegrees;
     while (Inertial7.rotation(degrees) > rotationTotal) {
 
+double speed = (rotationTotal - Inertial7.rotation(degrees)) * -1;
+
       RightMotor.spin(forward);
       LeftMotor.spin(reverse);
 
-      RightMotor.setVelocity(50, percent);
-      LeftMotor.setVelocity(50, percent);
+      RightMotor.setVelocity(speed, percent);
+      LeftMotor.setVelocity(speed, percent);
     }
   }
   RightMotor.setVelocity(0, percent);
@@ -65,10 +69,12 @@ void autoMode(bool rSide) {
   // uncurl
 
   if (rSide) {
+
+    turn(1, 90);
     // move forward lil bit
     // rotate 45ish degrees right
     // move forward until hit goal (method TBD)
-
+/*
     int lastSpeed = Inertial7.acceleration(xaxis);
 
     while (!bounceDetect(lastSpeed)) {
@@ -77,7 +83,7 @@ void autoMode(bool rSide) {
 
       lastSpeed = Inertial7.acceleration(xaxis);
     }
-
+*/
     // move back small amount
     // turn so arm is over pole
     // dump the rings
@@ -94,6 +100,7 @@ void autoMode(bool rSide) {
     // bring back
 
   } else {
+    turn(0, 90);
     // angle bot
     // dump rings
     // unangle bot
@@ -132,9 +139,12 @@ int main() {
     RightMotor.spin(forward);
     LeftMotor.spin(forward);
   }
+
   if (Controller1.ButtonRight.pressing()) {
+    //right side
     autoMode(1);
   } else if (Controller1.ButtonLeft.pressing()) {
+    //left side auto
     autoMode(0);
   }
 }
