@@ -29,44 +29,24 @@ bool bounceDetect(float lastSpeed) {
 }
 
 void turn(bool rDir, int rotationDegrees) {
-  int Kp = 0.5;
-  int Ki = 0.2;
-  int Kd = 0.1;
 
   RightMotor.setVelocity(0, percent);
   LeftMotor.setVelocity(0, percent);
 
   if (rDir) {
     double rotationTotal = Inertial7.rotation(degrees) + rotationDegrees;
-   
-   int previous_error;
-   int error;
-   int integral;
-   while (Inertial7.rotation(degrees) < rotationTotal) {
 
- error = rotationTotal - Inertial7.rotation(degrees);
- integral = integral + error;
-
-if (error == 0) {
-  integral = 0;
-}
-if (abs(error) > 100) {
-  integral = 0;
-}
-
-int derivative = error - previous_error;
-
- previous_error = error;
-
- int speed = Kp*error + Ki*integral + Kd*derivative;
-
-      RightMotor.spin(reverse);
-      LeftMotor.spin(forward);
-
-      RightMotor.setVelocity(speed, percent);
-      LeftMotor.setVelocity(speed, percent);
+    while (Inertial7.rotation(degrees) < rotationTotal) {
     }
-  } else {
+
+    RightMotor.spin(reverse);
+    LeftMotor.spin(forward);
+
+    RightMotor.setVelocity(50, percent);
+    LeftMotor.setVelocity(50, percent);
+  }
+
+  else {
     double rotationTotal = Inertial7.rotation(degrees) - rotationDegrees;
     while (Inertial7.rotation(degrees) > rotationTotal) {
 
