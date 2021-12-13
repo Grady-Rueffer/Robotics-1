@@ -45,6 +45,8 @@
 // :^)
 using namespace vex;
 
+#pragma region bounceDetect
+
 void bounceDetect() {
   
   int decelBuffer = 50;
@@ -64,11 +66,16 @@ LeftMotor.spin(forward);
 
     lastSpeed = Inertial1.acceleration(xaxis);
   }
+
   RightMotor.setVelocity(0, percent);
   LeftMotor.setVelocity(0, percent);
 }
 
-void turn(bool rDir, int rotationDegrees) {
+#pragma endregion
+
+#pragma region autoTurn
+
+void autoTurn(bool rDir, int rotationDegrees) {
   double Kp = 0.5;
   RightMotor.setVelocity(0, percent);
   LeftMotor.setVelocity(0, percent);
@@ -82,6 +89,9 @@ void turn(bool rDir, int rotationDegrees) {
       double speed = error * Kp;
       if (speed < 10) {
         speed = 10;
+      }
+      else if (speed > 50) {
+        speed = 50;
       }
 
       RightMotor.spin(reverse);
@@ -112,13 +122,16 @@ void turn(bool rDir, int rotationDegrees) {
   LeftMotor.setVelocity(0, percent);
 }
 
+#pragma endregion
+
+#pragma region autoMode
 void autoMode(bool rSide) {
   // uncurl
 
   if (rSide) {
     Controller1.Screen.clearScreen();
     Controller1.Screen.print("Good");
-    turn(1, 180);
+    autoTurn(1, 180);
     // move forward lil bit
     // rotate 45ish degrees right
     // move forward until hit goal (method TBD)
@@ -133,10 +146,10 @@ void autoMode(bool rSide) {
         }
     */
     // move back small amount
-    // turn so arm is over pole
+    // autoTurn so arm is over pole
     // dump the rings
 
-    // turn back
+    // autoTurn back
     // move forwards
     // pick up goal
     // move back until past line
@@ -148,7 +161,7 @@ void autoMode(bool rSide) {
     // bring back
 
   } else {
-    turn(0, 90);
+    autoTurn(0, 90);
     // angle bot
     // dump rings
     // unangle bot
@@ -156,6 +169,8 @@ void autoMode(bool rSide) {
     // move onto goal
   }
 }
+
+#pragma endregion
 
 bool rc = true;
 int deadBand = 5;
@@ -173,7 +188,7 @@ int main() {
     Controller1.Screen.print(Inertial1.rotation(degrees));
 
     // how fast it move
-
+#pragma region rcMovement
     rightSpeed = Controller1.Axis2.position(percent);
     leftSpeed = Controller1.Axis3.position(percent);
     // antistick-drift
@@ -192,7 +207,8 @@ int main() {
     }
     RightMotor.spin(forward);
     LeftMotor.spin(forward);
-
+#pragma endregion
+   
     if (Controller1.ButtonRight.pressing()) {
 
       // right side
