@@ -48,23 +48,29 @@ using namespace vex;
 #pragma region bounceDetect
 
 void bounceDetect() {
-  
-  int decelBuffer = 50;
   bool bump = false;
-  int lastSpeed = Inertial1.acceleration(xaxis);
+  double speed = 0;
+  int delay = 10;
 
   while (!bump) {
-RightMotor.setVelocity(50, percent);
-LeftMotor.setVelocity(50, percent);
+    delay--;
+     Controller1.Screen.clearScreen();
+    Controller1.Screen.setCursor(0, 0);
+    Controller1.Screen.print(speed);
+    Controller1.Screen.setCursor(3, 0);
+    Controller1.Screen.print(delay);
 
-RightMotor.spin(forward);
-LeftMotor.spin(forward);
+    speed += Inertial1.acceleration(yaxis) * -1;
 
-    if (Inertial1.acceleration(xaxis) < lastSpeed - decelBuffer) {
-      bump = true;
-    }
+    RightMotor.setVelocity(40, percent);
+    LeftMotor.setVelocity(40, percent);
 
-    lastSpeed = Inertial1.acceleration(xaxis);
+    RightMotor.spin(forward);
+    LeftMotor.spin(forward);
+
+    //if (speed < 0.25 && delay  < 0) {
+    //  bump = true;
+    //}
   }
 
   RightMotor.setVelocity(0, percent);
@@ -89,8 +95,7 @@ void autoTurn(bool rDir, int rotationDegrees) {
       double speed = error * Kp;
       if (speed < 10) {
         speed = 10;
-      }
-      else if (speed > 50) {
+      } else if (speed > 50) {
         speed = 50;
       }
 
@@ -129,9 +134,8 @@ void autoMode(bool rSide) {
   // uncurl
 
   if (rSide) {
-    Controller1.Screen.clearScreen();
-    Controller1.Screen.print("Good");
-    autoTurn(1, 180);
+
+    bounceDetect();
     // move forward lil bit
     // rotate 45ish degrees right
     // move forward until hit goal (method TBD)
@@ -181,16 +185,17 @@ int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   Inertial1.calibrate();
+  
 
   while (rc) {
     Controller1.Screen.clearScreen();
     Controller1.Screen.setCursor(0, 0);
-    Controller1.Screen.print(Inertial1.rotation(degrees));
+    Controller1.Screen.print(Inertial1.acceleration(yaxis));
 
     // how fast it move
 #pragma region rcMovement
-    rightSpeed = Controller1.Axis2.position(percent);
-    leftSpeed = Controller1.Axis3.position(percent);
+    rightSpeed = Controller1.Axis2.position(percent) * 0.5;
+    leftSpeed = Controller1.Axis3.position(percent) * 0.5;
     // antistick-drift
     if (abs(rightSpeed) < deadBand) {
       RightMotor.setVelocity(0, percent);
@@ -208,7 +213,7 @@ int main() {
     RightMotor.spin(forward);
     LeftMotor.spin(forward);
 #pragma endregion
-   
+
     if (Controller1.ButtonRight.pressing()) {
 
       // right side
